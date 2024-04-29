@@ -29,11 +29,11 @@ Nope. It's only for Rachel to demo her code. Don't fork this. It can be used as 
 
 == Screenshots ==
 
-![alt text](https://raw.githubusercontent.com/RachelRVasquez/spreadsheet-post-converter/main/assets/dashboard-screenshot.png)
+![screenshot of admin screen](https://raw.githubusercontent.com/RachelRVasquez/spreadsheet-post-converter/main/assets/dashboard-screenshot.png)
 
 == Changelog ==
 
 = 1.0 =
-* Initial commit to Github. Basic structure is in. JS/PHP functionality not yet in.
+* Initial commit to Github.
 
 
