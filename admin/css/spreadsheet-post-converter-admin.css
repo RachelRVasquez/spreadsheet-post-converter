@@ -3,18 +3,18 @@
  * included in this file.
  */
 
- .spc-loading {
+#spc-loading {
 	display: flex;
 	margin-top: 1rem;
 	padding: 1rem;
 	background: #fff;
  }
 
- .spc-loading.hidden {
+#spc-loading.hidden {
 	display: none;
  }
 
- .spc-loading img {
+#spc-loading img {
 	margin-left: .5rem;
  }
 

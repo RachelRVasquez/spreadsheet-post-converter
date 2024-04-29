@@ -13,7 +13,7 @@
 
 	  function spcHandleSpreadsheetUpload(){
 		const spcForm = document.getElementById('spc-upload-spreadsheet-form'),
-		spcLoading    = document.querySelector('spc-loading');
+		spcLoading    = document.getElementById('spc-loading');
 	
 		if ( 'undefined' === typeof spcForm || null === spcForm ) {
 			return;
@@ -21,8 +21,7 @@
 		
 		spcForm.addEventListener('submit', function (event) {
 			event.preventDefault();
-
-			// spcLoading.classList.remove('hidden');
+			spcLoading.classList.remove('hidden');
 	
 			$.ajax({
 				url: wpApiSettings.root + 'spreadsheet-converter/v1/upload-spreadsheet-data',
@@ -32,9 +31,14 @@
 				cache: false,
 				processData: false,
 				success: function (data) {
-					// spcLoading.classList.add('hidden');
-					console.log(data);
-					$('#spc-excel-area').html(data);
+					console.log('success', data);
+
+					spcLoading.classList.add('hidden');
+					$('#spc-excel-area').html(data['message']);
+				},
+				error: function (data) {
+					console.log('error', data);
+					spcLoading.classList.add('hidden');
 				}
 			});
 		});
