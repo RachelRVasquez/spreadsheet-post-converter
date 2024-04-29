@@ -38,6 +38,11 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'SPREADSHEET_POST_CONVERTER_VERSION', '1.0.0' );
 
 /**
+ * Set a constant for the assets path
+ */
+define( 'SPREADSHEET_POST_CONVERTER_ASSETS_URL', plugins_url( '/assets', __FILE__ ) );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-spreadsheet-post-converter-activator.php
  */
@@ -79,4 +84,5 @@ function run_spreadsheet_post_converter() {
 	$plugin->run();
 
 }
+
 run_spreadsheet_post_converter();

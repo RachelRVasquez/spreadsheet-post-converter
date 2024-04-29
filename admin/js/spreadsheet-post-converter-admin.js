@@ -1,56 +1,46 @@
 (function ($) {
 	'use strict';
 
-	/**
-	 * All of the code for your admin-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
-	const form = document.getElementById('sc-upload-spreadsheet-form');
+	ready( spcHandleSpreadsheetUpload );
 
-	console.log('testing if this is working weeeh');
+	function ready(fn) {
+		if (document.readyState !== 'loading') {
+		  fn();
+		} else {
+		  document.addEventListener('DOMContentLoaded', fn );
+		}
+	  }
 
-	if ( 'undefined' === typeof form || 'null' === typeof form ) {
-		return;
-	}
+	  function spcHandleSpreadsheetUpload(){
+		const spcForm = document.getElementById('spc-upload-spreadsheet-form'),
+		spcLoading    = document.querySelector('spc-loading');
 	
-	form.addEventListener('submit', function (event) {
-		event.preventDefault();
+		if ( 'undefined' === typeof spcForm || null === spcForm ) {
+			return;
+		}
+		
+		spcForm.addEventListener('submit', function (event) {
+			event.preventDefault();
 
-		$.ajax({
-			url: wpApiSettings.root + 'spreadsheet-converter/v1/upload-spreadsheet-data',
-			method: "POST",
-			data: new FormData(this),
-			contentType: false,
-			cache: false,
-			processData: false,
-			success: function (data) {
-				console.log(data);
-				$('#excel-area').html(data);
-			}
+			// spcLoading.classList.remove('hidden');
+	
+			$.ajax({
+				url: wpApiSettings.root + 'spreadsheet-converter/v1/upload-spreadsheet-data',
+				method: "POST",
+				data: new FormData(this),
+				contentType: false,
+				cache: false,
+				processData: false,
+				success: function (data) {
+					// spcLoading.classList.add('hidden');
+					console.log(data);
+					$('#spc-excel-area').html(data);
+				}
+			});
 		});
-	});
+	  }
+
+	
+	
 
 })(jQuery);

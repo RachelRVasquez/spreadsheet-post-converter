@@ -28,10 +28,6 @@
  * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
  */
 
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
-
 class Spreadsheet_Post_Converter
 {
 
@@ -79,8 +75,9 @@ class Spreadsheet_Post_Converter
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'spreadsheet-post-converter';
 
+		$this->plugin_name = 'spreadsheet-post-converter';
+		
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -161,9 +158,12 @@ class Spreadsheet_Post_Converter
 
 		$plugin_admin = new Spreadsheet_Post_Converter_Admin($this->get_plugin_name(), $this->get_version());
 		
-		$this->loader->add_action('admin_menu', $plugin_admin, 'create_sc_admin_page', 99);
+		$this->loader->add_action('admin_menu', $plugin_admin, 'create_sc_admin_page');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+		$this->loader->add_action('init', $plugin_admin, 'create_account_code_cpt');
+		$this->loader->add_action('init', $plugin_admin, 'create_department_taxonomy');
+		$this->loader->add_action('init', $plugin_admin, 'create_budget_year_taxonomy');
 		$this->loader->add_action('rest_api_init', $plugin_admin, 'register_sc_routes');
 		
 	}

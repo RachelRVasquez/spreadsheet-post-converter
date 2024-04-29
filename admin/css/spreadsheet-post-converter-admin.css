@@ -2,3 +2,19 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+ .spc-loading {
+	display: flex;
+	margin-top: 1rem;
+	padding: 1rem;
+	background: #fff;
+ }
+
+ .spc-loading.hidden {
+	display: none;
+ }
+
+ .spc-loading img {
+	margin-left: .5rem;
+ }
+

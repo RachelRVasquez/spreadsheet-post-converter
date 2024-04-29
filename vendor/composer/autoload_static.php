@@ -57,8 +57,8 @@ class ComposerStaticInit798df655f5b05c680381a95c7e197a44
         ),
         'voku\\' => 
         array (
-            0 => __DIR__ . '/..' . '/voku/portable-utf8/src/voku',
-            1 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+            0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+            1 => __DIR__ . '/..' . '/voku/portable-utf8/src/voku',
         ),
         'ZipStream\\' => 
         array (
@@ -90,8 +90,8 @@ class ComposerStaticInit798df655f5b05c680381a95c7e197a44
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
