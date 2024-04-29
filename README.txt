@@ -29,7 +29,7 @@ Nope. It's only for Rachel to demo her code. Don't fork this. It can be used as 
 
 == Screenshots ==
 
-1. This screen shot description corresponds to dashboard-screenshot.png.
+![alt text](https://raw.githubusercontent.com/RachelRVasquez/spreadsheet-post-converter/main/assets/dashboard-screenshot.png)
 
 == Changelog ==
 
