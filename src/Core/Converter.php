@@ -4,7 +4,7 @@
  * The file that defines the core plugin class
  *
  * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
+ * public-facing side of the site and the Admin area.
  *
  * @link       https://rachievee.com
  * @since      1.0.0
@@ -16,7 +16,7 @@
 /**
  * The core plugin class.
  *
- * This is used to define internationalization, admin-specific hooks, and
+ * This is used to define internationalization, Admin-specific hooks, and
  * public-facing site hooks.
  *
  * Also maintains the unique identifier of this plugin as well as the current
@@ -28,7 +28,9 @@
  * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
  */
 
-class Spreadsheet_Post_Converter
+namespace Rachievee\SpreadsheetPostConverter\Core;
+
+class Converter
 {
 
 	/**
@@ -63,7 +65,7 @@ class Spreadsheet_Post_Converter
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * Load the dependencies, define the locale, and set the hooks for the Admin area and
 	 * the public-facing side of the site.
 	 *
 	 * @since    1.0.0
@@ -77,7 +79,7 @@ class Spreadsheet_Post_Converter
 		}
 
 		$this->plugin_name = 'spreadsheet-post-converter';
-		
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -91,7 +93,7 @@ class Spreadsheet_Post_Converter
 	 *
 	 * - Spreadsheet_Post_Converter_Loader. Orchestrates the hooks of the plugin.
 	 * - Spreadsheet_Post_Converter_i18n. Defines internationalization functionality.
-	 * - Spreadsheet_Post_Converter_Admin. Defines all hooks for the admin area.
+	 * - Spreadsheet_Post_Converter_Admin. Defines all hooks for the Admin area.
 	 * - Spreadsheet_Post_Converter_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
@@ -107,18 +109,18 @@ class Spreadsheet_Post_Converter
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-spreadsheet-post-converter-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/Loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-spreadsheet-post-converter-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/I18n.php';
 
 		/**
-		 * The class responsible for defining all actions that occur in the admin area.
+		 * The class responsible for defining all actions that occur in the Admin area.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-spreadsheet-post-converter-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'Admin/class-spreadsheet-post-converter-Admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -147,7 +149,7 @@ class Spreadsheet_Post_Converter
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
+	 * Register all of the hooks related to the Admin area functionality
 	 * of the plugin.
 	 *
 	 * @since    1.0.0
@@ -157,7 +159,7 @@ class Spreadsheet_Post_Converter
 	{
 
 		$plugin_admin = new Spreadsheet_Post_Converter_Admin($this->get_plugin_name(), $this->get_version());
-		
+
 		$this->loader->add_action('admin_menu', $plugin_admin, 'create_sc_admin_page');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
@@ -165,7 +167,7 @@ class Spreadsheet_Post_Converter
 		$this->loader->add_action('init', $plugin_admin, 'create_department_taxonomy');
 		$this->loader->add_action('init', $plugin_admin, 'create_budget_year_taxonomy');
 		$this->loader->add_action('rest_api_init', $plugin_admin, 'register_sc_routes');
-		
+
 	}
 
 	/**

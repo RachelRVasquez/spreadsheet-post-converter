@@ -4,7 +4,7 @@
  * The plugin bootstrap file
  *
  * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
+ * Admin area. This file also includes all of the dependencies used by the plugin,
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
@@ -44,19 +44,19 @@ define( 'SPREADSHEET_POST_CONVERTER_ASSETS_URL', plugins_url( '/assets', __FILE_
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-spreadsheet-post-converter-activator.php
+ * This action is documented in includes/Activator.php
  */
 function activate_spreadsheet_post_converter() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-spreadsheet-post-converter-activator.php';
+	require_once plugin_dir_path(__FILE__) . 'Core/Activator.php';
 	Spreadsheet_Post_Converter_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-spreadsheet-post-converter-deactivator.php
+ * This action is documented in includes/Deactivator.php
  */
 function deactivate_spreadsheet_post_converter() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-spreadsheet-post-converter-deactivator.php';
+	require_once plugin_dir_path(__FILE__) . 'Core/Deactivator.php';
 	Spreadsheet_Post_Converter_Deactivator::deactivate();
 }
 
@@ -65,9 +65,9 @@ register_deactivation_hook( __FILE__, 'deactivate_spreadsheet_post_converter' );
 
 /**
  * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
+ * Admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-spreadsheet-post-converter.php';
+require plugin_dir_path(__FILE__) . 'Core/Converter.php';
 
 /**
  * Begins execution of the plugin.
@@ -78,11 +78,16 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-spreadsheet-post-converter
  *
  * @since    1.0.0
  */
-function run_spreadsheet_post_converter() {
+defined( 'ABSPATH' ) || exit;
 
-	$plugin = new Spreadsheet_Post_Converter();
-	$plugin->run();
+require_once __DIR__ . '/vendor/autoload.php';
 
+use Rachievee\SpreadsheetPostConverter\Core\Converter;
+
+function rachievee_spc_bootstrap() {
+    $plugin = new Converter();
+    $plugin->init();
 }
 
-run_spreadsheet_post_converter();
+add_action( 'plugins_loaded', 'rachievee_spc_bootstrap' );
+

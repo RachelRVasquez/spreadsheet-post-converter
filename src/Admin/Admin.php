@@ -1,23 +1,23 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
+ * The Admin-specific functionality of the plugin.
  *
  * @link       https://rachievee.com
  * @since      1.0.0
  *
  * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/admin
+ * @subpackage Spreadsheet_Post_Converter/Admin
  */
 
 /**
- * The admin-specific functionality of the plugin.
+ * The Admin-specific functionality of the plugin.
  *
  * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
+ * enqueue the Admin-specific stylesheet and JavaScript.
  *
  * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/admin
+ * @subpackage Spreadsheet_Post_Converter/Admin
  * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
  */
 
@@ -28,7 +28,9 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 
-class Spreadsheet_Post_Converter_Admin
+namespace Rachievee\SpreadsheetPostConverter\Admin;
+
+class Admin
 {
 
 
@@ -65,7 +67,7 @@ class Spreadsheet_Post_Converter_Admin
 	}
 
 	/**
-	 * Create the admin area menu/form page
+	 * Create the Admin area menu/form page
 	 *
 	 * @since    1.0.0
 	 */
@@ -91,34 +93,34 @@ class Spreadsheet_Post_Converter_Admin
 	}
 
 	/**
-	 * Fetch front-end template for admin menu page
+	 * Fetch front-end template for Admin menu page
 	 *
 	 * @since    1.0.0
 	 */
 	public function get_spreadsheet_post_converter_template()
 	{
-		include(plugin_dir_path(__DIR__) . 'admin/partials/spreadsheet-post-converter-admin-display.php');
+		include(plugin_dir_path(__DIR__) . 'Admin/partials/admin-display.php');
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
+	 * Register the stylesheets for the Admin area.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles()
 	{
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/spreadsheet-post-converter-admin.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'Admin/partials/css/admin.css', array(), $this->version, 'all');
 	}
 
 	/**
-	 * Register the JavaScript for the admin area.
+	 * Register the JavaScript for the Admin area.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts()
 	{
         wp_enqueue_script( 'wp-api' ); // Enqueue the wp-api script
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/spreadsheet-post-converter-admin.js', array('jquery', 'wp-api'), $this->version, false);
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'Admin/partials/js/admin.js', array('jquery', 'wp-api'), $this->version, false);
 	}
 
 	/**
@@ -314,7 +316,7 @@ class Spreadsheet_Post_Converter_Admin
 	}
 
 	/**
-	 * Register custom route for spreadsheet data to pass through on the admin
+	 * Register custom route for spreadsheet data to pass through on the Admin
 	 *
 	 * @since    1.0.0
 	 */

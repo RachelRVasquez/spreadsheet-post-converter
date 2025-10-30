@@ -21,7 +21,9 @@
  * @subpackage Spreadsheet_Post_Converter/includes
  * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
  */
-class Spreadsheet_Post_Converter_Loader {
+
+namespace Rachievee\SpreadsheetPostConverter\Core;
+class Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

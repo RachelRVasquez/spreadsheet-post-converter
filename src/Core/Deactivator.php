@@ -20,7 +20,8 @@
  * @subpackage Spreadsheet_Post_Converter/includes
  * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
  */
-class Spreadsheet_Post_Converter_Deactivator {
+namespace Rachievee\SpreadsheetPostConverter\Core;
+class Deactivator {
 
 	/**
 	 * Short Description. (use period)
