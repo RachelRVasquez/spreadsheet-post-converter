@@ -13,9 +13,9 @@
  */
 ?>
 <div class="wrap">
-	<h1><?php _e('Spreadsheet to Post Type Converter', 'spreadsheet-post-converter');?></h1>
+	<h1><?php esc_html_e('Spreadsheet to Post Type Converter', 'spreadsheet-post-converter');?></h1>
 	<p class="description">
-		<?php _e('Since this is a code sample of Rachel\'s, this expects an excel file with columns A - D, the first column is "Account Code", the rest are: Budget, Department, Year in that specific order.','spreadsheet-post-converter'); ?>
+		<?php esc_html_e('Since this is a code sample of Rachel\'s, this expects an excel file with columns A - D, the first column is "Account Code", the rest are: Budget, Department, Year in that specific order.','spreadsheet-post-converter'); ?>
 	</p>
 
 	<form method="post" enctype="multipart/form-data" id="spc-upload-spreadsheet-form">
@@ -24,21 +24,21 @@
 				<tr>
 					<th>
 						<label for="spc-spreadsheet-upload">
-							<?php _e( 'Select Spreadsheet', 'spreadsheet-post-converter' ); ?>
+							<?php esc_html_e( 'Select Spreadsheet', 'spreadsheet-post-converter' ); ?>
 						</label>
 					</th>
 					<td>
 						<input type="file" name="spc_spreadsheet_upload" id="spc-spreadsheet-upload"/>
-						<p class="description"><?php _e( 'Only .xls and .xlsx accepted', 'spreadsheet-post-converter' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Only .xls and .xlsx accepted', 'spreadsheet-post-converter' ); ?></p>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<button type="submit" name="spc-upload-spreadsheet" class="button button-primary">
-			<?php _e( 'Upload File', 'spreadsheet-post-converter' ); ?>
+			<?php esc_html_e( 'Upload File', 'spreadsheet-post-converter' ); ?>
 		</button>
 		<div id="spc-loading" class="hidden">
-			<?php _e( 'Processing... Thank you for your patience.', 'spreadsheet-post-converter' ); ?>
+			<?php esc_html_e( 'Processing... Thank you for your patience.', 'spreadsheet-post-converter' ); ?>
 			<img src="<?php echo esc_url( SPREADSHEET_POST_CONVERTER_ASSETS_URL . '/spc-loading.gif' ); ?>" role="presentation"/>
 		</div>
 	</form>

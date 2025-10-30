@@ -77,8 +77,7 @@ class Spreadsheet_Post_Converter_Admin
 			'manage_options',
 			'spreadsheet-post-converter',
 			false,
-			'dashicons-media-spreadsheet',
-			''
+			'dashicons-media-spreadsheet'
 		);
 
 		add_submenu_page(
@@ -108,19 +107,6 @@ class Spreadsheet_Post_Converter_Admin
 	 */
 	public function enqueue_styles()
 	{
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Spreadsheet_Post_Converter_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Spreadsheet_Post_Converter_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/spreadsheet-post-converter-admin.css', array(), $this->version, 'all');
 	}
 
@@ -131,20 +117,8 @@ class Spreadsheet_Post_Converter_Admin
 	 */
 	public function enqueue_scripts()
 	{
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Spreadsheet_Post_Converter_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Spreadsheet_Post_Converter_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/spreadsheet-post-converter-admin.js', array('jquery'), $this->version, false);
+        wp_enqueue_script( 'wp-api' ); // Enqueue the wp-api script
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/spreadsheet-post-converter-admin.js', array('jquery', 'wp-api'), $this->version, false);
 	}
 
 	/**
@@ -261,8 +235,8 @@ class Spreadsheet_Post_Converter_Admin
 				//if term does not exist, add it
 				if ( !$parent_term ) {
 					$parent_term_id = $parent_term['term_id'];
-	
-					wp_insert_term ( 
+
+					wp_insert_term (
 						$dept_name,
 						'department',
 						array(
@@ -272,7 +246,7 @@ class Spreadsheet_Post_Converter_Admin
 						)
 					);
 				}
-				
+
 			}
 		}
 	}
@@ -321,13 +295,13 @@ class Spreadsheet_Post_Converter_Admin
 
 		//Add terms out of the box
 		if ( taxonomy_exists( 'budget_year' ) ) {
-				$current_year = date( 'Y' );
+				$current_year = gmdate( 'Y' );
 
 				$term_exists = term_exists( $current_year, 'budget_year' );
 
 				//if term does not exist, add it
 				if ( !$term_exists ) {
-					wp_insert_term ( 
+					wp_insert_term (
 						$current_year,
 						'budget_year',
 						array(
@@ -367,10 +341,9 @@ class Spreadsheet_Post_Converter_Admin
 	 * @param [type] $request
 	 * @since    1.0.0
 	 */
-	public function handle_sc_spreadsheet_data($request)
+	public function handle_sc_spreadsheet_data( object $request ) : object
 	{
-		$post_data = $request->get_params();
-		$response  = $post_data;
+        $response = $request->get_params();
 
 		if ( $_FILES["spc_spreadsheet_upload"]["name"] != '' ) {
 			$allowed_extension = array( 'xls', 'xlsx' );
@@ -422,7 +395,7 @@ class Spreadsheet_Post_Converter_Admin
 							}
 
 							if ( $col !== 1 && $row !== 1 && !empty( $account_code ) && !is_null( $account_code ) ) {
-								//skip column 1 since we're already using it (account codes) as the array indexes	
+								//skip column 1 since we're already using it (account codes) as the array indexes
 								//skip row 1 since that's just the labels for the cols?
 								//Col 1 Account Code, 2 Budget, 3 Department, 4 Year
 								//skips any row without an account code
@@ -434,7 +407,7 @@ class Spreadsheet_Post_Converter_Admin
 
 					//comment out this line or set $account_code_posts_created to true/false if you're testing
 					$account_code_posts_created = $this->create_account_code_posts( $clean_spreadsheet_array );
-					
+
 					if ( !$account_code_posts_created ) {
 						$response = [
 							'message' => '<div class="notice notice-error">Something went wrong when creating the account code post</div>',
@@ -445,7 +418,7 @@ class Spreadsheet_Post_Converter_Admin
 						// $writer->generateStyles( false );
 						//@todo: HTML headers interfering with WP, remove somehow, how?
 						// $writer_output = $writer->save( 'php://output' );
-						
+
 
 						$response = [
 							'message' => '<div class="notice notice-success">Account codes have been imported and converted to posts, please review.</div>',
@@ -463,7 +436,7 @@ class Spreadsheet_Post_Converter_Admin
 				];
 			}
 		} else {
-			$response = $response = [
+			$response = [
 				'message' =>'<div class="notice notice-error">Please select a file before uploading.</div>',
 				'output' => false,
 			];
@@ -474,11 +447,11 @@ class Spreadsheet_Post_Converter_Admin
 
 	/**
 	 * Create account code posts, add custom taxonomies and post meta from spreadsheet data
-	 * 
+	 *
 	 * @param [array] $spreadsheet_data
 	 * @since    1.0.0
 	 */
-	public function create_account_code_posts( $spreadsheet_data ) {
+	public function create_account_code_posts( array $spreadsheet_data ) : bool {
 		foreach( $spreadsheet_data as $account_code => $account_code_data ) {
 			$get_budget = $account_code_data[0] ?: '';
 			$get_dept   = $account_code_data[1] ?: '';
@@ -489,7 +462,7 @@ class Spreadsheet_Post_Converter_Admin
 				'post_type'     => 'account_code',
 				'post_author'   => 1,
 			);
-			
+
 			$post_id = wp_insert_post( $account_code_cpt );
 
 			if ( $post_id ) {
@@ -498,22 +471,22 @@ class Spreadsheet_Post_Converter_Admin
 				if ( $dept_term_id ) {
 					wp_set_post_terms( $post_id, $dept_term_id, 'department' );
 				}
-				
+
 				$budget_year_term_id = term_exists( $get_year, 'budget_year');
 				if ( $budget_year_term_id ) {
 					wp_set_post_terms( $post_id, $get_year, 'budget_year' );
 				}
-				
+
 				if ( !empty( $get_budget ) ) {
 					//postmeta (public)
 					add_post_meta( $post_id, 'budget_amount', $get_budget );
 				}
-				
+
 			} else {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }
