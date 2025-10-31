@@ -39,7 +39,7 @@
 		</button>
 		<div id="spc-loading" class="hidden">
 			<?php esc_html_e( 'Processing... Thank you for your patience.', 'spreadsheet-post-converter' ); ?>
-			<img src="<?php echo esc_url( SPREADSHEET_POST_CONVERTER_ASSETS_URL . '/spc-loading.gif' ); ?>" role="presentation"/>
+			<img src="<?php echo esc_url( plugin_dir_url(__FILE__) . 'assets/spc-loading.gif' ); ?>" role="presentation"/>
 		</div>
 	</form>
 

@@ -61,19 +61,8 @@ class Admin
         include __DIR__ . '/partials/admin-display.php';
     }
 
-
     /**
-     * Register the stylesheets for the Admin area.
-     *
-     * @since    2.0.0
-     */
-    public function enqueue_styles()
-    {
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'Admin/partials/css/admin.css', array(), $this->version, 'all');
-    }
-
-    /**
-     * Register the JavaScript for the Admin area.
+     * Register the Styles and JavaScript for the Admin area.
      *
      * @since    2.0.0
      */
@@ -299,7 +288,7 @@ class Admin
         $base = 'upload-spreadsheet-data';
         register_rest_route($namespace, '/' . $base . '/', array(
             array(
-                'methods' => WP_REST_Server::CREATABLE,
+                'methods' => \WP_REST_Server::CREATABLE,
                 'callback' => array($this, 'handle_sc_spreadsheet_data'),
                 'args' => array(),
                 'permission_callback' => function () {
@@ -400,7 +389,7 @@ class Admin
                             'output' => true,
                         ];
 
-                        return new WP_REST_Response($response, 200);
+                        return new \WP_REST_Response($response, 200);
                     }
                 }
             } else {
@@ -416,7 +405,7 @@ class Admin
             ];
         }
 
-        return new WP_REST_Response($response, 200);
+        return new \WP_REST_Response($response, 200);
     }
 
     /**

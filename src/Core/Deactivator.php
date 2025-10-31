@@ -12,7 +12,7 @@ class Deactivator
     /**
      * @return void
      */
-    public static function deactivate()
+    public static function deactivate() : void
     {
         //Optional: Potential things to do here
         //Clean up scheduled cron jobs (this doesn't have any, but for example)
