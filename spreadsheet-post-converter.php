@@ -7,7 +7,7 @@
  * @wordpress-plugin
  * Plugin Name:       Account Code to Post Type Converter
  * Plugin URI:        https://github.com/RachelRVasquez/spreadsheet-post-converter
- * Description:       Upload an excel spreadsheet to convert account codes into post types, custom taxonomies, and post meta. Meant to showcase Rachel's code, not for public use.
+ * Description:       Upload an Excel spreadsheet to convert account codes into post types, custom taxonomies, and post meta. Meant to showcase Rachel's code, not for public use.
  * Version:           2.0.0
  * Author:            Rachel R. Vasquez
  * Author URI:        https://rrvasquez.com
@@ -18,8 +18,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if (!defined('WPINC')) {
+    die;
 }
 
 /**
@@ -31,10 +31,9 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since    2.0.0
  */
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 const SPREADSHEET_POST_CONVERTER_VERSION = '2.0.0';
-
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -43,13 +42,14 @@ use Rachievee\SpreadsheetPostConverter\Core\Deactivator;
 use Rachievee\SpreadsheetPostConverter\Core\Converter;
 
 // Activation and deactivation hooks
-register_activation_hook( __FILE__, [ Activator::class, 'activate' ] );
-register_deactivation_hook( __FILE__, [ Deactivator::class, 'deactivate' ] );
+register_activation_hook(__FILE__, [Activator::class, 'activate']);
+register_deactivation_hook(__FILE__, [Deactivator::class, 'deactivate']);
 
-function rachievee_spc_run_plugin() {
+function rachievee_spc_run_plugin()
+{
     $plugin = new Converter();
     $plugin->run();
 }
 
-add_action( 'plugins_loaded', 'rachievee_spc_run_plugin' );
+add_action('plugins_loaded', 'rachievee_spc_run_plugin');
 

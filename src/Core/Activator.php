@@ -1,38 +1,24 @@
 <?php
-
 /**
- * Fired during plugin activation
+ * Activator class to add optional functions
  *
- * @link       https://rachievee.com
- * @since      1.0.0
- *
- * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/includes
- */
-
-/**
- * Fired during plugin activation.
- *
- * This class defines all code necessary to run during the plugin's activation.
- *
- * @since      1.0.0
- * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/includes
- * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
+ * @since 2.0.0
  */
 
 namespace Rachievee\SpreadsheetPostConverter\Core;
-class Activator {
+class Activator
+{
+    /**
+     * @return void
+     */
+    public static function activate()
+    {
+        //Optional: Potential things to do here
+        //Create custom database tables
+        //Set up default options
+        //Confirm custom post types or roles exist
+        //Run migration scripts
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
-
-	}
-
+        flush_rewrite_rules();
+    }
 }

@@ -1,37 +1,25 @@
 <?php
-
 /**
- * Fired during plugin deactivation
+ * Deactivator class to add optional functions
  *
- * @link       https://rachievee.com
- * @since      1.0.0
- *
- * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/includes
+ * @since 2.0.0
  */
 
-/**
- * Fired during plugin deactivation.
- *
- * This class defines all code necessary to run during the plugin's deactivation.
- *
- * @since      1.0.0
- * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/includes
- * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
- */
 namespace Rachievee\SpreadsheetPostConverter\Core;
-class Deactivator {
+class Deactivator
+{
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function deactivate() {
+    /**
+     * @return void
+     */
+    public static function deactivate()
+    {
+        //Optional: Potential things to do here
+        //Clean up scheduled cron jobs (this doesn't have any, but for example)
+        //Flush rewrite rules due to adding CPTs
+        //Stop background processes
 
-	}
+        flush_rewrite_rules();
+    }
 
 }

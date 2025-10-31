@@ -19,13 +19,12 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @since      1.0.0
- * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/includes
- * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
+ * @since      2.0.0
  */
+
 namespace Rachievee\SpreadsheetPostConverter\Core;
-class I18n {
+class I18n
+{
     private $plugin_name;
 
     public function __construct($plugin_name, $version)
@@ -35,21 +34,21 @@ class I18n {
         $this->version = $version;
     }
 
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @since    1.0.0
-	 */
-	public function load_plugin_textdomain() {
+    /**
+     * Load the plugin text domain for translation.
+     *
+     * @since    2.0.0
+     */
+    public function load_plugin_textdomain()
+    {
 
-		load_plugin_textdomain(
+        load_plugin_textdomain(
             $this->plugin_name,
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
+            false,
+            dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
+        );
 
-	}
-
+    }
 
 
 }

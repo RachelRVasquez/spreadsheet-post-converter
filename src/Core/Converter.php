@@ -3,29 +3,12 @@
 /**
  * The file that defines the core plugin class
  *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the Admin area.
- *
- * @link       https://rachievee.com
- * @since      1.0.0
- *
- * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/includes
- */
-
-/**
- * The core plugin class.
- *
- * This is used to define internationalization, Admin-specific hooks, and
- * public-facing site hooks.
+ * This is used to define internationalization, and Admin-specific hooks.
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
- * @package    Spreadsheet_Post_Converter
- * @subpackage Spreadsheet_Post_Converter/includes
- * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
+ * @since      2.0.0
  */
 
 namespace Rachievee\SpreadsheetPostConverter\Core;
@@ -38,146 +21,135 @@ use Rachievee\SpreadsheetPostConverter\Core\I18n;
 class Converter
 {
 
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Spreadsheet_Post_Converter_Loader    $loader    Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
+    /**
+     * The loader that's responsible for maintaining and registering all hooks that power
+     * the plugin.
+     *
+     * @var Loader $loader Maintains and registers all hooks for the plugin.
+     */
+    protected $loader;
 
-	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
+    /**
+     * The unique identifier of this plugin.
+     *
+     * @access   protected
+     * @var      string $plugin_name The string used to uniquely identify this plugin.
+     */
+    protected $plugin_name;
 
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
-	 */
-	protected $version;
+    /**
+     * The current version of the plugin.
+     *
+     * @since    2.0.0
+     * @access   protected
+     * @var      string $version The current version of the plugin.
+     */
+    protected $version;
 
-	/**
-	 * Define the core functionality of the plugin.
-	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the Admin area and
-	 * the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function __construct()
-	{
+    /**
+     * Define the core functionality of the plugin.
+     *
+     * Set the plugin name and the plugin version that can be used throughout the plugin.
+     * Load the dependencies, define the locale, and set the hooks for the Admin area and
+     * the public-facing side of the site.
+     *
+     * @since    2.0.0
+     */
+    public function __construct()
+    {
         $this->version = defined('SPREADSHEET_POST_CONVERTER_VERSION')
             ? SPREADSHEET_POST_CONVERTER_VERSION
             : '2.0.0';
 
         $this->plugin_name = 'spreadsheet-post-converter';
 
-		$this->load_dependencies();
-		$this->set_locale();
-		$this->define_admin_hooks();
-	}
+        $this->load_dependencies();
+        $this->set_locale();
+        $this->define_admin_hooks();
+    }
 
-	/**
-	 * Load the required dependencies for this plugin.
-	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Spreadsheet_Post_Converter_Loader. Orchestrates the hooks of the plugin.
-	 * - Spreadsheet_Post_Converter_i18n. Defines internationalization functionality.
-	 * - Spreadsheet_Post_Converter_Admin. Defines all hooks for the Admin area.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function load_dependencies()
-	{
-		$this->loader = new Loader();
+    /**
+     * Create an instance of the loader which will be used to register the hooks
+     * with WordPress.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function load_dependencies()
+    {
+        $this->loader = new Loader();
         $this->loader->run();
-	}
+    }
 
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Spreadsheet_Post_Converter_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function set_locale()
-	{
+    /**
+     * Define the locale for this plugin for internationalization.
+     *
+     * Uses the Spreadsheet_Post_Converter_i18n class in order to set the domain and to register the hook
+     * with WordPress.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function set_locale()
+    {
 
-		$plugin_i18n = new I18n($this->plugin_name, $this->version);
+        $plugin_i18n = new I18n($this->plugin_name, $this->version);
 
-		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_spreadsheet_post_converter');
-	}
+        $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_spreadsheet_post_converter');
+    }
 
-	/**
-	 * Register all of the hooks related to the Admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_admin_hooks()
-	{
+    /**
+     * Register all of the hooks related to the Admin area functionality
+     * of the plugin.
+     *
+     * @since    2.0.0
+     * @access   private
+     */
+    private function define_admin_hooks()
+    {
 
-		$plugin_admin = new Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = new Admin($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action('admin_menu', $plugin_admin, 'create_sc_admin_page');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
-		$this->loader->add_action('init', $plugin_admin, 'create_account_code_cpt');
-		$this->loader->add_action('init', $plugin_admin, 'create_department_taxonomy');
-		$this->loader->add_action('init', $plugin_admin, 'create_budget_year_taxonomy');
-		$this->loader->add_action('rest_api_init', $plugin_admin, 'register_sc_routes');
+        $this->loader->add_action('admin_menu', $plugin_admin, 'create_sc_admin_page');
+        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+        $this->loader->add_action('init', $plugin_admin, 'create_account_code_cpt');
+        $this->loader->add_action('init', $plugin_admin, 'create_department_taxonomy');
+        $this->loader->add_action('init', $plugin_admin, 'create_budget_year_taxonomy');
+        $this->loader->add_action('rest_api_init', $plugin_admin, 'register_sc_routes');
 
-	}
+    }
 
-	/**
-	 * Run the loader to execute all of the hooks with WordPress.
-	 *
-	 * @since    1.0.0
-	 */
-	public function run()
-	{
-		$this->loader->run();
-	}
+    /**
+     * Run the loader to execute all of the hooks with WordPress.
+     *
+     * @since    2.0.0
+     */
+    public function run()
+    {
+        $this->loader->run();
+    }
 
-	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
-	 */
-	public function get_plugin_name()
-	{
-		return $this->plugin_name;
-	}
+    /**
+     * The name of the plugin used to uniquely identify it within the context of
+     * WordPress and to define internationalization functionality.
+     *
+     * @return    string    The name of the plugin.
+     * @since     1.0.0
+     */
+    public function get_plugin_name()
+    {
+        return $this->plugin_name;
+    }
 
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
-	 */
-	public function get_version()
-	{
-		return $this->version;
-	}
+    /**
+     * Retrieve the version number of the plugin.
+     *
+     * @return    string    The version number of the plugin.
+     * @since     1.0.0
+     */
+    public function get_version()
+    {
+        return $this->version;
+    }
 }
