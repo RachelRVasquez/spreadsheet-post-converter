@@ -48,7 +48,7 @@ register_deactivation_hook( __FILE__, [ Deactivator::class, 'deactivate' ] );
 
 function rachievee_spc_run_plugin() {
     $plugin = new Converter();
-    $plugin->init();
+    $plugin->run();
 }
 
 add_action( 'plugins_loaded', 'rachievee_spc_run_plugin' );
