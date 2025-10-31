@@ -1,24 +1,16 @@
 <?php
-
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * Admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              https://rachievee.com
- * @since             1.0.0
+ * @since             2.0.0
  * @package           Spreadsheet_Post_Converter
  *
  * @wordpress-plugin
  * Plugin Name:       Account Code to Post Type Converter
- * Plugin URI:        https://rachievee.com
+ * Plugin URI:        https://github.com/RachelRVasquez/spreadsheet-post-converter
  * Description:       Upload an excel spreadsheet to convert account codes into post types, custom taxonomies, and post meta. Meant to showcase Rachel's code, not for public use.
- * Version:           1.0.0
+ * Version:           2.0.0
  * Author:            Rachel R. Vasquez
- * Author URI:        https://rachievee.com/
+ * Author URI:        https://rrvasquez.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       spreadsheet-post-converter
@@ -31,63 +23,33 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define( 'SPREADSHEET_POST_CONVERTER_VERSION', '1.0.0' );
-
-/**
- * Set a constant for the assets path
- */
-define( 'SPREADSHEET_POST_CONVERTER_ASSETS_URL', plugins_url( '/assets', __FILE__ ) );
-
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/Activator.php
- */
-function activate_spreadsheet_post_converter() {
-	require_once plugin_dir_path(__FILE__) . 'Core/Activator.php';
-	Spreadsheet_Post_Converter_Activator::activate();
-}
-
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/Deactivator.php
- */
-function deactivate_spreadsheet_post_converter() {
-	require_once plugin_dir_path(__FILE__) . 'Core/Deactivator.php';
-	Spreadsheet_Post_Converter_Deactivator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_spreadsheet_post_converter' );
-register_deactivation_hook( __FILE__, 'deactivate_spreadsheet_post_converter' );
-
-/**
- * The core plugin class that is used to define internationalization,
- * Admin-specific hooks, and public-facing site hooks.
- */
-require plugin_dir_path(__FILE__) . 'Core/Converter.php';
-
-/**
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since    2.0.0
  */
 defined( 'ABSPATH' ) || exit;
 
+const SPREADSHEET_POST_CONVERTER_VERSION = '2.0.0';
+
+
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Rachievee\SpreadsheetPostConverter\Core\Activator;
+use Rachievee\SpreadsheetPostConverter\Core\Deactivator;
 use Rachievee\SpreadsheetPostConverter\Core\Converter;
 
-function rachievee_spc_bootstrap() {
+// Activation and deactivation hooks
+register_activation_hook( __FILE__, [ Activator::class, 'activate' ] );
+register_deactivation_hook( __FILE__, [ Deactivator::class, 'deactivate' ] );
+
+function rachievee_spc_run_plugin() {
     $plugin = new Converter();
     $plugin->init();
 }
 
-add_action( 'plugins_loaded', 'rachievee_spc_bootstrap' );
+add_action( 'plugins_loaded', 'rachievee_spc_run_plugin' );
 

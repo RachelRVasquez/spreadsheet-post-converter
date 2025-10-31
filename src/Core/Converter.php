@@ -30,6 +30,11 @@
 
 namespace Rachievee\SpreadsheetPostConverter\Core;
 
+use Rachievee\SpreadsheetPostConverter\Admin\Admin;
+use Rachievee\SpreadsheetPostConverter\Core\Loader;
+use Rachievee\SpreadsheetPostConverter\Core\I18n;
+
+
 class Converter
 {
 
@@ -72,18 +77,15 @@ class Converter
 	 */
 	public function __construct()
 	{
-		if (defined('SPREADSHEET_POST_CONVERTER_VERSION')) {
-			$this->version = SPREADSHEET_POST_CONVERTER_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+        $this->version = defined('SPREADSHEET_POST_CONVERTER_VERSION')
+            ? SPREADSHEET_POST_CONVERTER_VERSION
+            : '2.0.0';
 
-		$this->plugin_name = 'spreadsheet-post-converter';
+        $this->plugin_name = 'spreadsheet-post-converter';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
 	}
 
 	/**
@@ -94,7 +96,6 @@ class Converter
 	 * - Spreadsheet_Post_Converter_Loader. Orchestrates the hooks of the plugin.
 	 * - Spreadsheet_Post_Converter_i18n. Defines internationalization functionality.
 	 * - Spreadsheet_Post_Converter_Admin. Defines all hooks for the Admin area.
-	 * - Spreadsheet_Post_Converter_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -104,31 +105,8 @@ class Converter
 	 */
 	private function load_dependencies()
 	{
-
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/Loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/I18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the Admin area.
-		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'Admin/class-spreadsheet-post-converter-Admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-spreadsheet-post-converter-public.php';
-
-		$this->loader = new Spreadsheet_Post_Converter_Loader();
+		$this->loader = new Loader();
+        $this->loader->run();
 	}
 
 	/**
@@ -143,9 +121,9 @@ class Converter
 	private function set_locale()
 	{
 
-		$plugin_i18n = new Spreadsheet_Post_Converter_i18n();
+		$plugin_i18n = new I18n($this->plugin_name, $this->version);
 
-		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
+		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_spreadsheet_post_converter');
 	}
 
 	/**
@@ -158,7 +136,7 @@ class Converter
 	private function define_admin_hooks()
 	{
 
-		$plugin_admin = new Spreadsheet_Post_Converter_Admin($this->get_plugin_name(), $this->get_version());
+		$plugin_admin = new Admin($this->get_plugin_name(), $this->get_version());
 
 		$this->loader->add_action('admin_menu', $plugin_admin, 'create_sc_admin_page');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
@@ -168,22 +146,6 @@ class Converter
 		$this->loader->add_action('init', $plugin_admin, 'create_budget_year_taxonomy');
 		$this->loader->add_action('rest_api_init', $plugin_admin, 'register_sc_routes');
 
-	}
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_public_hooks()
-	{
-
-		$plugin_public = new Spreadsheet_Post_Converter_Public($this->get_plugin_name(), $this->get_version());
-
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 	}
 
 	/**
@@ -206,17 +168,6 @@ class Converter
 	public function get_plugin_name()
 	{
 		return $this->plugin_name;
-	}
-
-	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    Spreadsheet_Post_Converter_Loader    Orchestrates the hooks of the plugin.
-	 */
-	public function get_loader()
-	{
-		return $this->loader;
 	}
 
 	/**

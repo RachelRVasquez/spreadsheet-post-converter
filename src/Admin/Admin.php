@@ -21,44 +21,17 @@
  * @author     Rachel R. Vasquez <rachelrvasquez@gmail.com>
  */
 
-
-require_once(plugin_dir_path(__DIR__) . 'vendor/autoload.php');
+namespace Rachievee\SpreadsheetPostConverter\Admin;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 
-namespace Rachievee\SpreadsheetPostConverter\Admin;
-
 class Admin
 {
-
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
 	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
 	private $version;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
-	 */
 	public function __construct($plugin_name, $version)
 	{
 
@@ -74,21 +47,21 @@ class Admin
 	public function create_sc_admin_page()
 	{
 		add_menu_page(
-			__('Convert Spreadsheet', 'spreadsheet-post-converter'),
+			__('Convert Spreadsheet', $this->plugin_name),
 			'Convert Spreadsheet',
 			'manage_options',
-			'spreadsheet-post-converter',
+            $this->plugin_name,
 			false,
 			'dashicons-media-spreadsheet'
 		);
 
 		add_submenu_page(
-			'spreadsheet-post-converter',
+            $this->plugin_name,
 			'Convert Spreadsheet',
 			'Dashboard',
 			'manage_options',
-			'spreadsheet-post-converter',
-			array($this, 'get_spreadsheet_post_converter_template'),
+            $this->plugin_name,
+			array($this, 'render_page'),
 		);
 	}
 
@@ -97,12 +70,12 @@ class Admin
 	 *
 	 * @since    1.0.0
 	 */
-	public function get_spreadsheet_post_converter_template()
-	{
-		include(plugin_dir_path(__DIR__) . 'Admin/partials/admin-display.php');
-	}
+    public function render_page(): void {
+        include __DIR__ . '/partials/admin-display.php';
+    }
 
-	/**
+
+    /**
 	 * Register the stylesheets for the Admin area.
 	 *
 	 * @since    1.0.0
@@ -119,9 +92,21 @@ class Admin
 	 */
 	public function enqueue_scripts()
 	{
-        wp_enqueue_script( 'wp-api' ); // Enqueue the wp-api script
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'Admin/partials/js/admin.js', array('jquery', 'wp-api'), $this->version, false);
-	}
+        $plugin_url = plugin_dir_url( __FILE__ );
+        wp_enqueue_style(
+            'spc-admin',
+            $plugin_url . 'css/admin.css',
+            [],
+            '1.0.0'
+        );
+        wp_enqueue_script(
+            'spc-admin',
+            $plugin_url . 'js/admin.js',
+            [ 'wp-api', 'jquery' ],
+            '1.0.0',
+            true
+        );
+    }
 
 	/**
 	 * Custom Post Type for spreadsheet data
@@ -467,6 +452,7 @@ class Admin
 
 			$post_id = wp_insert_post( $account_code_cpt );
 
+            //@todo: Find out why it's not assigning terms...
 			if ( $post_id ) {
 				//terms
 				$dept_term_id = term_exists( $get_dept, 'department');
