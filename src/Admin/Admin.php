@@ -9,20 +9,28 @@
 
 namespace Rachievee\SpreadsheetPostConverter\Admin;
 
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use Rachievee\SpreadsheetPostConverter\Admin\Services\Structure;
+use Rachievee\SpreadsheetPostConverter\Admin\Services\SpreadsheetHandler;
+use Rachievee\SpreadsheetPostConverter\Admin\Services\PostCreator;
+use Rachievee\SpreadsheetPostConverter\Admin\Routes\SpreadsheetRoute;
 
 class Admin
 {
-    private $plugin_name;
-    private $version;
-
-    public function __construct($plugin_name, $version)
+    public function __construct()
     {
 
-        $this->plugin_name = $plugin_name;
-        $this->version = $version;
+        $this->structure = new Structure();
+        $this->assets = new Assets();
+        $this->route = new SpreadsheetRoute(
+            new SpreadsheetHandler(),
+            new PostCreator()
+        );
+    }
+
+    public function register() {
+        add_action('init', [$this->structure, 'register']);
+        add_action('admin_enqueue_scripts', [$this->assets, 'enqueue']);
+        add_action('rest_api_init', [$this->route, 'register']);
     }
 
     /**
@@ -58,7 +66,7 @@ class Admin
      */
     public function render_page(): void
     {
-        include __DIR__ . '/partials/admin-display.php';
+        include __DIR__ . '/Templates/admin-display.php';
     }
 
     /**
