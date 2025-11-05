@@ -7,8 +7,9 @@ class Structure
     public function register(){
         $this->register_account_post_type();
         $this->register_account_taxonomies();
-        $this->add_department_terms();
-        $this->add_budget_year_terms();
+        //@todo: There's a bug here where it's adding duplicates over and over
+//        $this->add_department_terms();
+//        $this->add_budget_year_terms();
     }
 
     private function register_account_post_type(){
