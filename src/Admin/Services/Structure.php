@@ -7,7 +7,8 @@ class Structure
     public function register(){
         $this->register_account_post_type();
         $this->register_account_taxonomies();
-        $this->add_account_terms();
+        $this->add_department_terms();
+        $this->add_budget_year_terms();
     }
 
     private function register_account_post_type(){
@@ -136,14 +137,69 @@ class Structure
         return $args;
     }
 
-    private function add_account_terms() : void {
+    private function add_department_terms() : void {
         $dept_term_exists = $this->does_taxonomy_exist('department');
         if ($dept_term_exists) {
-
+            $this->add_terms_by_parent([
+                'information-technology' => 'Information Technology',
+                'finance' => 'Finance',
+                'advertising' => 'Advertising',
+                'membership' => 'Membership',
+                'legal' => 'Legal',
+            ], 'department');
         }
     }
-    
+
+    private function add_budget_year_terms() : void {
+        $budget_year_term_exists = $this->does_taxonomy_exist('budget_year');
+        $current_year = gmdate('Y');
+
+        if ($budget_year_term_exists) {
+            wp_insert_term(
+                $current_year,
+                'budget_year',
+                array(
+                    'description' => '',
+                    'slug' => $current_year,
+                )
+            );
+        }
+    }
+
     private function does_taxonomy_exist( string $term_slug ) : bool {
         return taxonomy_exists($term_slug);
     }
+
+    private function add_terms_by_parent( array $terms, string $taxonomy ) : void {
+        foreach ($terms as $term_slug => $term_name) {
+            $parent_term = term_exists($term_slug, $taxonomy);
+
+            //if term does not exist, add it
+            if (!$parent_term) {
+                wp_insert_term(
+                    $term_name,
+                    $taxonomy,
+                    array(
+                        'description' => '',
+                        'slug' => $taxonomy,
+                    )
+                );
+            } else {
+                //add the rest to the parent
+                $parent_term_id = $parent_term['term_id'];
+
+                wp_insert_term(
+                    $term_name,
+                    'department',
+                    array(
+                        'description' => '',
+                        'slug' => $term_slug,
+                        'parent' => $parent_term_id,
+                    )
+                );
+            }
+        }
+    }
+
+
 }
