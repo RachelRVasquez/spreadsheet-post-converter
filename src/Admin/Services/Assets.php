@@ -10,7 +10,7 @@ class Assets
      */
     public function enqueue_scripts_and_styles()
     {
-        $plugin_url = \plugin_dir_url(__FILE__);
+        $plugin_url = \plugin_dir_url(__DIR__) . 'assets/';
         \wp_enqueue_style(
             'spc-admin',
             $plugin_url . 'css/admin.css',
