@@ -9,10 +9,11 @@
 
 namespace Rachievee\SpreadsheetPostConverter\Admin;
 
-use Rachievee\SpreadsheetPostConverter\Admin\Services\Structure;
+use Rachievee\SpreadsheetPostConverter\Admin\Routes\SpreadsheetRoute;
+use Rachievee\SpreadsheetPostConverter\Admin\Services\Assets;
 use Rachievee\SpreadsheetPostConverter\Admin\Services\PostCreator;
 use Rachievee\SpreadsheetPostConverter\Admin\Services\SpreadsheetHandler;
-use Rachievee\SpreadsheetPostConverter\Admin\Routes\SpreadsheetRoute;
+use Rachievee\SpreadsheetPostConverter\Admin\Services\Structure;
 
 class Admin
 {
@@ -33,7 +34,8 @@ class Admin
     public function register()
     {
         add_action('init', [$this->structure, 'register']);
-        add_action('admin_enqueue_scripts', [$this->assets, 'enqueue']);
+        add_action('admin_enqueue_scripts', [$this->assets, 'enqueue_scripts_and_styles']);
+        add_action('admin_menu', [$this, 'create_sc_admin_page']);
         add_action('rest_api_init', [$this->route, 'register']);
     }
 
@@ -75,26 +77,5 @@ class Admin
         include __DIR__ . '/Templates/admin-display.php';
     }
 
-    /**
-     * Register the Styles and JavaScript for the Admin area.
-     *
-     * @since    2.0.0
-     */
-    public function enqueue_scripts()
-    {
-        $plugin_url = plugin_dir_url(__FILE__);
-        wp_enqueue_style(
-            'spc-admin',
-            $plugin_url . 'css/admin.css',
-            [],
-            '1.0.0'
-        );
-        wp_enqueue_script(
-            'spc-admin',
-            $plugin_url . 'js/admin.js',
-            ['wp-api', 'jquery'],
-            '1.0.0',
-            true
-        );
-    }
+
 }
