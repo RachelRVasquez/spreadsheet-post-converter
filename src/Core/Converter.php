@@ -108,15 +108,15 @@ class Converter
     private function define_admin_hooks()
     {
 
-        $plugin_admin = new Admin($this->get_plugin_name(), $this->get_version());
+        $plugin_admin = new Admin($this->plugin_name, $this->version);
 
         $this->loader->add_action('admin_menu', $plugin_admin, 'create_sc_admin_page');
 //        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
-        $this->loader->add_action('init', $plugin_admin, 'create_account_code_cpt');
-        $this->loader->add_action('init', $plugin_admin, 'create_department_taxonomy');
-        $this->loader->add_action('init', $plugin_admin, 'create_budget_year_taxonomy');
-        $this->loader->add_action('rest_api_init', $plugin_admin, 'register_sc_routes');
+//        $this->loader->add_action('init', $plugin_admin, 'create_account_code_cpt');
+//        $this->loader->add_action('init', $plugin_admin, 'create_department_taxonomy');
+//        $this->loader->add_action('init', $plugin_admin, 'create_budget_year_taxonomy');
+//        $this->loader->add_action('rest_api_init', $plugin_admin, 'register_sc_routes');
 
     }
 

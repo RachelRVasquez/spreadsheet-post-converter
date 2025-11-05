@@ -10,21 +10,28 @@
 namespace Rachievee\SpreadsheetPostConverter\Admin;
 
 use Rachievee\SpreadsheetPostConverter\Admin\Services\Structure;
+use Rachievee\SpreadsheetPostConverter\Admin\Services\PostCreator;
 use Rachievee\SpreadsheetPostConverter\Admin\Services\SpreadsheetHandler;
 use Rachievee\SpreadsheetPostConverter\Admin\Routes\SpreadsheetRoute;
 
 class Admin
 {
-    public function __construct()
+    private $plugin_name;
+
+    public function __construct($plugin_name, $version)
     {
 
+        $this->plugin_name = $plugin_name;
+        $this->version = $version;
         $this->structure = new Structure();
         $this->assets = new Assets();
-        $this->handler = new SpreadsheetHandler();
-        $this->route = new SpreadsheetRoute($this->handler);
+        $post_creator = new PostCreator();
+        $handler = new SpreadsheetHandler($post_creator);
+        $this->route = new SpreadsheetRoute($handler);
     }
 
-    public function register() {
+    public function register()
+    {
         add_action('init', [$this->structure, 'register']);
         add_action('admin_enqueue_scripts', [$this->assets, 'enqueue']);
         add_action('rest_api_init', [$this->route, 'register']);

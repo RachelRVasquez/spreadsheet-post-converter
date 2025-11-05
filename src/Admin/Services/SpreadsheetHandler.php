@@ -2,11 +2,20 @@
 
 namespace Rachievee\SpreadsheetPostConverter\Admin\Services;
 
+use WP_REST_Server;
+use Rachievee\SpreadsheetPostConverter\Admin\Services\PostCreator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
+
 class SpreadsheetHandler
 {
+    private $post_creator;
+
+    public function __construct(PostCreator $post_creator)
+    {
+        $this->post_creator = $post_creator;
+    }
     /**
      * Handle data from uploaded spreadsheet and return a response
      *
@@ -78,7 +87,7 @@ class SpreadsheetHandler
                     }
 
                     //comment out this line or set $account_code_posts_created to true/false if you're testing
-                    $account_code_posts_created = $this->create_account_code_posts($clean_spreadsheet_array);
+                    $account_code_posts_created = $this->post_creator->create_account_code_posts($clean_spreadsheet_array);
 
                     if (!$account_code_posts_created) {
                         $response = [
@@ -114,6 +123,6 @@ class SpreadsheetHandler
             ];
         }
 
-        return new \WP_REST_Response($response, 200);
+        return new WP_REST_Response($response, 200);
     }
 }
