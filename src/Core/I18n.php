@@ -25,13 +25,12 @@
 namespace Rachievee\SpreadsheetPostConverter\Core;
 class I18n
 {
-    private $plugin_name;
+    private string $plugin_name;
 
-    public function __construct($plugin_name, $version)
+    public function __construct($plugin_name)
     {
 
         $this->plugin_name = $plugin_name;
-        $this->version = $version;
     }
 
     /**
@@ -42,7 +41,7 @@ class I18n
     public function load_plugin_textdomain()
     {
 
-        load_plugin_textdomain(
+        \load_plugin_textdomain(
             $this->plugin_name,
             false,
             dirname(dirname(plugin_basename(__FILE__))) . '/languages/'

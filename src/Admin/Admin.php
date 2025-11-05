@@ -77,5 +77,4 @@ class Admin
         include __DIR__ . '/Templates/admin-display.php';
     }
 
-
 }

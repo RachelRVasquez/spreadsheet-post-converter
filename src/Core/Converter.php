@@ -17,18 +17,8 @@ use Rachievee\SpreadsheetPostConverter\Admin\Admin;
 use Rachievee\SpreadsheetPostConverter\Core\Loader;
 use Rachievee\SpreadsheetPostConverter\Core\I18n;
 
-
 class Converter
 {
-
-    /**
-     * The loader that's responsible for maintaining and registering all hooks that power
-     * the plugin.
-     *
-     * @var Loader $loader Maintains and registers all hooks for the plugin.
-     */
-    protected $loader;
-
     /**
      * The unique identifier of this plugin.
      *
@@ -60,7 +50,6 @@ class Converter
         $this->version = defined('SPREADSHEET_POST_CONVERTER_VERSION')
             ? SPREADSHEET_POST_CONVERTER_VERSION
             : '2.0.0';
-
         $this->plugin_name = 'spreadsheet-post-converter';
 
         $this->load_dependencies();
@@ -82,6 +71,16 @@ class Converter
     }
 
     /**
+     * Run the loader to execute all of the hooks with WordPress.
+     *
+     * @since    2.0.0
+     */
+    public function run(): void
+    {
+        $this->loader->run();
+    }
+
+    /**
      * Define the locale for this plugin for internationalization.
      *
      * Uses the Spreadsheet_Post_Converter_i18n class in order to set the domain and to register the hook
@@ -93,9 +92,8 @@ class Converter
     private function set_locale()
     {
 
-        $plugin_i18n = new I18n($this->plugin_name, $this->version);
-
-        $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_spreadsheet_post_converter');
+        $plugin_i18n = new I18n($this->plugin_name);
+        $plugin_i18n->load_plugin_textdomain();
     }
 
     /**
@@ -110,38 +108,5 @@ class Converter
 
         $plugin_admin = new Admin($this->plugin_name, $this->version);
         $plugin_admin->register();
-    }
-
-    /**
-     * Run the loader to execute all of the hooks with WordPress.
-     *
-     * @since    2.0.0
-     */
-    public function run()
-    {
-        $this->loader->run();
-    }
-
-    /**
-     * The name of the plugin used to uniquely identify it within the context of
-     * WordPress and to define internationalization functionality.
-     *
-     * @return    string    The name of the plugin.
-     * @since     1.0.0
-     */
-    public function get_plugin_name()
-    {
-        return $this->plugin_name;
-    }
-
-    /**
-     * Retrieve the version number of the plugin.
-     *
-     * @return    string    The version number of the plugin.
-     * @since     1.0.0
-     */
-    public function get_version()
-    {
-        return $this->version;
     }
 }
